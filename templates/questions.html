@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{question}}</h1>
+<a href={{url_for('questions', num=num)}}><button>Next Question</button></a>
+{% endblock content %}
