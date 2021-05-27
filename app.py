@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, flash
 from flask.helpers import url_for
 from surveys import satisfaction_survey
 from flask_debugtoolbar import DebugToolbarExtension
@@ -24,6 +24,7 @@ def questions(num):
     global page_num
     input_num = int(num)
     if input_num != page_num:
+        flash('You\'re trying to access an invalid question')
         return redirect(url_for('questions', num=page_num))
     page_num = int(num)  # change string to integer
     if page_num < len(satisfaction_survey.questions):

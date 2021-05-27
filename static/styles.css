@@ -1,0 +1,8 @@
+.warning{
+    background-color: rgb(245, 166, 166);
+    border-radius: 1.5em;
+    color: red;
+    /* text-align: center;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear; */
+}
