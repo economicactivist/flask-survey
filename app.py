@@ -21,11 +21,14 @@ def index():
 
 @app.route('/questions/<num>')
 def questions(num):
-   
+    global page_num
+    input_num = int(num)
+    if input_num != page_num:
+        return redirect(url_for('questions', num=page_num))
     page_num = int(num)  # change string to integer
     if page_num < len(satisfaction_survey.questions):
         q = satisfaction_survey.questions[page_num]
-        
+
         return render_template('questions.html', question=q.question, choices=q.choices, num=page_num)
     else:
         return '<body><h1>Thank You!</h1></body>'
@@ -37,13 +40,11 @@ def questions(num):
 def save_answer(num):
     # global page_num += 1
     global page_num
-    input_num = int(num)
-    if input_num != page_num:
-        return redirect(url_for('questions', num=page_num))
+    page_num += 1
     answer = request.form
     responses.append(answer['answer'])
     print(responses)
     print('num variable', num)
     print('page_num variable', page_num)
-    page_num += 1
+
     return redirect(url_for('questions', num=num))
