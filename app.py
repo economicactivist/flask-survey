@@ -9,30 +9,39 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 toolbar = DebugToolbarExtension(app)
 
 responses = []
-num = 0  # variable to set page number
+page_num = 0  # variable to set page number
 
 
 @app.route('/')
 def index():
     title = satisfaction_survey.title
     instructions = satisfaction_survey.instructions
-    return render_template('index.html', title=title, instructions=instructions, num=num)
+    return render_template('index.html', title=title, instructions=instructions, num=page_num)
 
 
 @app.route('/questions/<num>')
 def questions(num):
-    num = int(num)  # change string to integer
-    if num < len(satisfaction_survey.questions):
-        q = satisfaction_survey.questions[num]
-        num += 1
-        return render_template('questions.html', question=q.question, choices=q.choices, num=num)
+    global page_num
+    if int(num) != page_num:
+        return redirect(url_for('questions', num=page_num))
+    page_num = int(num)  # change string to integer
+    if page_num < len(satisfaction_survey.questions):
+        q = satisfaction_survey.questions[page_num]
+        page_num += 1
+        return render_template('questions.html', question=q.question, choices=q.choices, num=page_num)
     else:
         return '<body><h1>Thank You!</h1></body>'
 # if __name__ == '__main__':
 #   app.run(host='127.0.0.1', port=8000, debug=True)
+
+
 @app.route('/answer/<num>', methods=['POST'])
 def save_answer(num):
-    answer= request.form
+    # global page_num += 1
+    answer = request.form
     responses.append(answer['answer'])
     print(responses)
+    print('num variable', num)
+    print('page_num variable', page_num)
+
     return redirect(url_for('questions', num=num))
