@@ -2,5 +2,12 @@
 
 {% block content %}
 <h1>{{question}}</h1>
-<a href={{url_for('questions', num=num)}}><button>Next Question</button></a>
+<!-- <a href={{url_for('questions', num=num)}}><button>Next Question</button></a> -->
+    <form action={{url_for('save_answer', num=num)}} method="POST">
+        {% for choice in choices %}
+            <label for={{choice}}>{{choice}}</label>
+            <input type="radio" name="answer" id={{choice}} value={{choice | replace(" ", "-")}}>
+        {% endfor %}
+    <button>Next Question</button></a>
+    </form>
 {% endblock content %}
