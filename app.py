@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, flash
+from flask import Flask, render_template, redirect, request, flash, session
 from flask.helpers import url_for
 from surveys import satisfaction_survey
 from flask_debugtoolbar import DebugToolbarExtension
@@ -18,6 +18,10 @@ def index():
     instructions = satisfaction_survey.instructions
     return render_template('index.html', title=title, instructions=instructions, num=page_num)
 
+@app.route('/initialize-session', methods=['POST'])
+def init_session(num):
+    session["responses"] = []
+    return redirect(url_for('questions', num=page_num))
 
 @app.route('/questions/<num>')
 def questions(num):
